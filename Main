@@ -1,0 +1,166 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp
+{
+    class ProgramQueue
+    {
+        abstract class Store {
+            protected string title;
+            protected int price;
+            protected double count;
+            
+            public static void PrintProduct(Queue <Store> storeСheckout) {
+                double totalPrice = 0;
+                double pricing = 0;
+                foreach (Store product in storeСheckout) {
+                    pricing = product.price * product.count;
+                    Console.WriteLine($"\"{product.title}\" price: {pricing} UAH");
+                    totalPrice += pricing;
+                }
+                Console.WriteLine("-----------------------------------");
+                Console.WriteLine($"Total price: {totalPrice} UAH");
+                Console.WriteLine();
+            }
+        }
+        
+        class Grocery : Store {
+            public Grocery (string title, int price, double count)
+            {
+                this.title = title;
+                this.price = price;
+                this.count = count;
+            }
+        }
+        
+        class Сhemical : Store {
+            public Сhemical (string title, int price, double count)
+            {
+                this.title = title;
+                this.price = price;
+                this.count = count;
+            }
+        }
+        
+        class Household : Store {
+            public Household (string title, int price, double count)
+            {
+                this.title = title;
+                this.price = price;
+                this.count = count;
+            }
+        }
+        
+        static void Main()
+        {
+            Queue<Store> storeСheckout = new Queue<Store> ();
+            storeСheckout.Enqueue(new Grocery ("apple golden", 20, 1));
+            storeСheckout.Enqueue(new Grocery ("Kherson tomato", 70, 1));
+            storeСheckout.Enqueue(new Grocery ("beef meet", 200, 1));
+            storeСheckout.Enqueue(new Grocery ("trout fish", 150, 1));
+            storeСheckout.Enqueue(new Grocery ("toast bread", 21, 1));
+            storeСheckout.Enqueue(new Сhemical ("dandruff shampoo", 100, 1));
+            storeСheckout.Enqueue(new Сhemical ("shower 3in1", 90, 1));
+            storeСheckout.Enqueue(new Сhemical ("toothpaste", 50, 1));
+            storeСheckout.Enqueue(new Сhemical ("washing gel", 300, 1));
+            storeСheckout.Enqueue(new Сhemical ("dishwashing liquid", 250, 1));
+            storeСheckout.Enqueue(new Household ("red pencil", 10, 1));
+            storeСheckout.Enqueue(new Household ("batterie", 25, 1));
+            storeСheckout.Enqueue(new Household ("led lamp", 75, 1));
+            storeСheckout.Enqueue(new Household ("eco pan", 550, 1));
+            storeСheckout.Enqueue(new Household ("toy car", 125, 1));
+
+            Store.PrintProduct(storeСheckout);
+            
+            while (true)
+            {
+                Console.WriteLine("1 - Додати товар");
+                Console.WriteLine("2 - Видалити товар");
+                Console.WriteLine("3 - Перемістити товар в кінець черги");
+                Console.WriteLine("4 - Вивести список");
+                Console.WriteLine("5 - Видалите все");
+                Console.WriteLine("6 - Вийти з магазину");
+    
+                Console.Write("Введіть дію: ");
+                string action = Console.ReadLine();
+    
+                if (action == "1")
+                 {
+                    Console.Write("Назва товару: ");
+                    string name = Console.ReadLine();
+                    Console.Write("Ціна товару: ");
+                    int cost = int.Parse(Console.ReadLine());
+                    Console.Write("Кількість товару: ");
+                    double quant = double.Parse(Console.ReadLine());
+                    storeСheckout.Enqueue(new Grocery(name, cost, quant));
+                    Console.WriteLine($"Ви додали товар в чергу. Кількість товарів в черзі {storeСheckout.Count}");
+                    Console.WriteLine();
+                }
+                else if (action == "2")
+                {
+                    if (storeСheckout.Count == 0)
+                    {
+                        Console.WriteLine("В черзі відсутні товари.");
+                    }
+                    else
+                    {
+                        storeСheckout.Dequeue();
+                        Console.WriteLine($"Ви видалили перший товар. Кількість товарів в черзі {storeСheckout.Count}");
+                    }
+                    Console.WriteLine();
+                }
+                else if (action == "3")
+                {
+                    if (storeСheckout.Count == 0)
+                    {
+                        Console.WriteLine("В черзі відсутні товари.");
+                    }
+                    else
+                    {
+                        storeСheckout.Enqueue(storeСheckout.Dequeue());
+                        Console.WriteLine("Ви успішно перемістили перший товар в кінець черги.");
+                    }
+                    Console.WriteLine();
+                }
+                else if (action == "4")
+                {
+                    if (storeСheckout.Count == 0)
+                    {
+                        Console.WriteLine("В черзі відсутні товари.");
+                        Console.WriteLine();
+                    }
+                    else
+                    {
+                        Store.PrintProduct(storeСheckout);
+                    }
+                }
+                else if (action == "5")
+                {
+                    if (storeСheckout.Count == 0)
+                    {
+                        Console.WriteLine("В черзі відсутні товари.");
+                    }
+                    else
+                    {
+                        storeСheckout.Clear();
+                        Console.WriteLine($"В черзі {storeСheckout.Count} продуктів");
+                    }
+                    Console.WriteLine();
+                }
+                else if (action == "6")
+                {
+                    Console.WriteLine("До зустрічі, в нашому магазині!");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Нажаль, немає такої дії");
+                    Console.WriteLine();
+                }
+            }
+        }
+    }
+}
